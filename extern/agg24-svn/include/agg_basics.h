@@ -290,11 +290,17 @@ namespace agg
         rect_base(T x1_, T y1_, T x2_, T y2_) :
             x1(x1_), y1(y1_), x2(x2_), y2(y2_) {}
 
+        /**
+        * x1 xmin, x2 xmax, y1 ymin, y2 ymax
+        */ 
         void init(T x1_, T y1_, T x2_, T y2_) 
         {
             x1 = x1_; y1 = y1_; x2 = x2_; y2 = y2_; 
         }
 
+        /**
+        * 交换使得x1 < x2, y1 < y2
+        */
         const self_type& normalize()
         {
             T t;
@@ -303,6 +309,9 @@ namespace agg
             return *this;
         }
 
+        /**
+        * 裁剪后无效返回false
+        */
         bool clip(const self_type& r)
         {
             if(x2 > r.x2) x2 = r.x2;
@@ -312,16 +321,25 @@ namespace agg
             return x1 <= x2 && y1 <= y2;
         }
 
+        /**
+        * 是否有效
+        */
         bool is_valid() const
         {
             return x1 <= x2 && y1 <= y2;
         }
 
+        /**
+        * 是否在区域内
+        */
         bool hit_test(T x, T y) const
         {
             return (x >= x1 && x <= x2 && y >= y1 && y <= y2);
         }
         
+        /**
+        * 是否重叠
+        */
         bool overlaps(const self_type& r) const
         {
             return !(r.x1 > x2 || r.x2 < x1

@@ -48,11 +48,14 @@
 class BufferRegion
 {
   public:
+    /**
+    * 根据rect大小new内存
+    */
     BufferRegion(const agg::rect_i &r) : rect(r)
     {
         width = r.x2 - r.x1;
         height = r.y2 - r.y1;
-        stride = width * 4;
+        stride = width * 4; // 4通道 rgba
         data = new agg::int8u[stride * height];
     }
 
@@ -86,6 +89,9 @@ class BufferRegion
         return stride;
     }
 
+    /**
+    * 深拷贝到buf并从rgba转成argb排序
+    */
     void to_string_argb(uint8_t *buf);
 
   private:
